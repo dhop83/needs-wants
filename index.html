@@ -475,13 +475,15 @@
         
         // Celebrate perfect score with confetti and sound
         function celebratePerfectScore() {
+            // Play sound immediately when showing results
             playSuccessSound();
             
-            // Launch multiple confetti pieces over time
+            // Launch all confetti pieces at once for immediate visual impact
             for (let i = 0; i < 200; i++) {
+                // Small stagger (50ms max) to prevent browser lag but still look simultaneous
                 setTimeout(() => {
                     createConfetti();
-                }, i * 20); // Stagger the confetti creation
+                }, Math.random() * 50);
             }
         }
 
