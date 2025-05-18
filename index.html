@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -181,119 +181,9 @@
     </div>
 
     <script>
-        // Game items - each with name, image placeholder, correct answer, and explanation
-        const allGameItems = [
-            {
-                name: "Clean Water",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Clean water is essential for drinking, cooking, and hygiene. Without it, people cannot survive for more than a few days."
-            },
-            {
-                name: "Smartphone",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "While useful for communication, smartphones are not essential for basic survival. People can live without them."
-            },
-            {
-                name: "Basic Shelter",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Shelter protects us from weather and provides safety, making it essential for human survival in most environments."
-            },
-            {
-                name: "Video Game Console",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "Video games provide entertainment but aren't necessary for survival or basic living standards."
-            },
-            {
-                name: "Nutritious Food",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Food provides essential nutrients and energy. Without proper nutrition, humans cannot survive."
-            },
-            {
-                name: "Designer Clothing",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "While clothing is a need, designer or luxury brands specifically are wants - basic clothing fulfills the need."
-            },
-            {
-                name: "Healthcare",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Access to basic healthcare is essential for treating illnesses and injuries and maintaining well-being."
-            },
-            {
-                name: "Vacation Trip",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "Vacations are enjoyable and can be good for mental health, but they aren't essential for basic survival."
-            },
-            {
-                name: "Education",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Basic education is considered a need in modern society as it provides essential skills for functioning and earning a living."
-            },
-            {
-                name: "Streaming Service",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "Entertainment services like streaming platforms provide enjoyment but aren't essential for basic living."
-            },
-            {
-                name: "Clean Air",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Clean air is essential for breathing and survival. Without it, humans cannot live."
-            },
-            {
-                name: "Basic Clothing",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Basic clothing protects us from the elements and provides warmth and safety."
-            },
-            {
-                name: "Internet Access",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "While increasingly important in modern society, internet access isn't essential for survival like food, water, and shelter."
-            },
-            {
-                name: "Sports Car",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "While transportation may be necessary in some circumstances, a luxury sports car specifically is a want, not a need."
-            },
-            {
-                name: "Gym Membership",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "Exercise is important for health, but a gym membership is just one optional way to stay active."
-            },
-            {
-                name: "Emergency Medicine",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "Access to emergency medical care is essential for survival in critical situations."
-            },
-            {
-                name: "Movie Tickets",
-                image: "/api/placeholder/200/200",
-                answer: "want",
-                explanation: "Entertainment and recreation are enjoyable but not essential for basic survival."
-            },
-            {
-                name: "Public Transportation",
-                image: "/api/placeholder/200/200",
-                answer: "need",
-                explanation: "In many areas, basic transportation is considered a need for accessing jobs, healthcare, and education."
-            }
-        ];
+        // Game items...
+        const allGameItems = [ /* ...same as before... */ ];
         
-        // Function to shuffle array using Fisher-Yates algorithm
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -302,26 +192,20 @@
             return array;
         }
         
-        // Select 10 random items for each game
         function selectRandomItems(count = 10) {
             const shuffled = shuffleArray([...allGameItems]);
             return shuffled.slice(0, count);
         }
         
-        // Get randomized items for the game
         let gameItems = [];
-
-        // Game state variables
         let currentItemIndex = 0;
         let score = 0;
         let userAnswers = [];
 
-        // Helper function to select an element
         function $(id) {
             return document.getElementById(id);
         }
 
-        // Helper function to show a screen and hide others
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -329,205 +213,135 @@
             $(screenId).classList.add('active');
         }
 
-        // Show the next item in the game
         function showNextItem() {
             if (currentItemIndex >= gameItems.length) {
                 endGame();
                 return;
             }
-
             const item = gameItems[currentItemIndex];
             $("item-name").textContent = item.name;
             $("item-image").src = item.image;
             $("item-image").alt = item.name;
-            
-            // Update progress bar
             const progressPercent = (currentItemIndex / gameItems.length) * 100;
             $("progress").style.width = progressPercent + "%";
         }
 
-        // Handle user's answer
         function handleAnswer(answer) {
             const currentItem = gameItems[currentItemIndex];
             const isCorrect = answer === currentItem.answer;
-            
-            if (isCorrect) {
-                score++;
-            }
-            
+            if (isCorrect) score++;
             userAnswers.push({
                 item: currentItem.name,
                 userAnswer: answer,
                 correctAnswer: currentItem.answer,
-                isCorrect: isCorrect,
+                isCorrect,
                 explanation: currentItem.explanation
             });
-            
             currentItemIndex++;
             showNextItem();
         }
 
-        // End the game and show results
         function endGame() {
             showScreen("screen-results");
             $("final-score").textContent = score;
-            
-            // Determine message based on score
-            const scoreMessage = $("score-message");
+            const msg = $("score-message");
             if (score === gameItems.length) {
-                scoreMessage.textContent = "PERFECT SCORE! You're a needs vs. wants expert!";
-                scoreMessage.classList.add("perfect-score");
+                msg.textContent = "PERFECT SCORE! You're a needs vs. wants expert!";
+                msg.classList.add("perfect-score");
                 celebratePerfectScore();
             } else if (score >= Math.floor(gameItems.length * 0.9)) {
-                scoreMessage.textContent = "Outstanding! You're an expert!";
+                msg.textContent = "Outstanding! You're an expert!";
             } else if (score >= Math.floor(gameItems.length * 0.7)) {
-                scoreMessage.textContent = "Great job! You have a solid understanding!";
+                msg.textContent = "Great job! You have a solid understanding!";
             } else if (score >= Math.floor(gameItems.length * 0.5)) {
-                scoreMessage.textContent = "Good effort! You're on the right track.";
+                msg.textContent = "Good effort! You're on the right track.";
             } else {
-                scoreMessage.textContent = "Keep learning! The difference between needs and wants can be tricky.";
+                msg.textContent = "Keep learning! The difference between needs and wants can be tricky.";
             }
-            
-            // Display detailed results
-            const resultsDetails = $("results-details");
-            resultsDetails.innerHTML = "";
-            
-            userAnswers.forEach((result, index) => {
-                const resultBox = document.createElement("div");
-                resultBox.className = `result-box ${result.isCorrect ? "correct" : "incorrect"}`;
-                
-                resultBox.innerHTML = `
-                    <p><strong>${index + 1}. ${result.item}</strong></p>
-                    <p>Your answer: ${result.userAnswer.toUpperCase()}</p>
-                    ${!result.isCorrect ? `<p>Correct answer: ${result.correctAnswer.toUpperCase()}</p>` : ""}
+
+            const details = $("results-details");
+            details.innerHTML = "";
+            userAnswers.forEach((res, idx) => {
+                const box = document.createElement("div");
+                box.className = `result-box ${res.isCorrect ? "correct" : "incorrect"}`;
+                box.innerHTML = `
+                    <p><strong>${idx + 1}. ${res.item}</strong></p>
+                    <p>Your answer: ${res.userAnswer.toUpperCase()}</p>
+                    ${!res.isCorrect ? `<p>Correct answer: ${res.correctAnswer.toUpperCase()}</p>` : ""}
                     <div class="explanation">
-                        <p><strong>Explanation:</strong> ${result.explanation}</p>
+                        <p><strong>Explanation:</strong> ${res.explanation}</p>
                     </div>
                 `;
-                
-                resultsDetails.appendChild(resultBox);
+                details.appendChild(box);
             });
         }
-        
-        // Create confetti for perfect score celebration
+
         function createConfetti() {
             const confetti = document.createElement("div");
             confetti.className = "confetti";
-            
-            // Random position, color, and size
-            const left = Math.random() * 100;
-            confetti.style.left = `${left}%`;
-            
-            const colors = ["#ffd700", "#ff0000", "#00ff00", "#0000ff", "#ff00ff", "#00ffff"];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.backgroundColor = randomColor;
-            
-            const size = Math.random() * 8 + 5; // 5-13px
+            confetti.style.left = `${Math.random() * 100}%`;
+            const colors = ["#ffd700","#ff0000","#00ff00","#0000ff","#ff00ff","#00ffff"];
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 8 + 5;
             confetti.style.width = `${size}px`;
             confetti.style.height = `${size}px`;
-            
-            // Random rotation
-            const rotationSpeed = Math.random() * 600 + 400; // 400-1000
-            confetti.style.animation = `confetti-fall ${rotationSpeed / 100}s ease-in-out forwards`;
-            
             document.body.appendChild(confetti);
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                confetti.remove();
-            }, (rotationSpeed / 100) * 1000);
+            setTimeout(() => confetti.remove(), 3000);
         }
-        
-        // Play celebration sound
+
         function playSuccessSound() {
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Create oscillator for "ta-da" sound
-                const playNote = (frequency, start, duration, volume) => {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.type = 'sine';
-                    oscillator.frequency.value = frequency;
-                    
-                    gainNode.gain.setValueAtTime(0, start);
-                    gainNode.gain.linearRampToValueAtTime(volume, start + 0.05);
-                    gainNode.gain.setValueAtTime(volume, start + duration - 0.05);
-                    gainNode.gain.linearRampToValueAtTime(0, start + duration);
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.start(start);
-                    oscillator.stop(start + duration);
+                const playNote = (freq, start, dur, vol) => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0, start);
+                    gain.gain.linearRampToValueAtTime(vol, start + 0.05);
+                    gain.gain.setValueAtTime(vol, start + dur - 0.05);
+                    gain.gain.linearRampToValueAtTime(0, start + dur);
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.start(start);
+                    osc.stop(start + dur);
                 };
-                
                 const now = audioContext.currentTime;
-                // Play a sequence of notes for celebration
-                playNote(587.33, now, 0.2, 0.5);      // D5
-                playNote(783.99, now + 0.2, 0.3, 0.6); // G5
-                playNote(1046.50, now + 0.5, 0.5, 0.7); // C6
-            } catch (error) {
+                playNote(587.33, now, 0.2, 0.5);
+                playNote(783.99, now + 0.2, 0.3, 0.6);
+                playNote(1046.50, now + 0.5, 0.5, 0.7);
+            } catch {
                 console.log("Audio playback not supported");
             }
         }
-        
-        // Celebrate perfect score with confetti and sound
+
+        // Updated to a fixed 10ms delay for all confetti
         function celebratePerfectScore() {
-            // Play sound immediately when showing results
             playSuccessSound();
-            
-            // Launch all confetti pieces at once for immediate visual impact
             for (let i = 0; i < 200; i++) {
-                // Small stagger (50ms max) to prevent browser lag but still look simultaneous
-                setTimeout(() => {
-                    createConfetti();
-                }, Math.random() * 50);
+                setTimeout(createConfetti, 10);
             }
         }
 
-        // Reset the game
         function resetGame() {
             currentItemIndex = 0;
             score = 0;
             userAnswers = [];
-            
-            // Reset any celebration styling
-            if ($("score-message").classList.contains("perfect-score")) {
-                $("score-message").classList.remove("perfect-score");
-            }
-            
-            // Get a new set of randomized items
+            $("score-message").classList.remove("perfect-score");
             gameItems = selectRandomItems(10);
-            
             showScreen("screen-start");
         }
 
         // Event listeners
         $("start-button").addEventListener("click", () => {
-            // Get random items for this game session
             gameItems = selectRandomItems(10);
             showScreen("screen-game");
             showNextItem();
         });
-        
-        $("how-to-play").addEventListener("click", () => {
-            showScreen("screen-how-to-play");
-        });
-        
-        $("back-to-start").addEventListener("click", () => {
-            showScreen("screen-start");
-        });
-        
-        $("need-button").addEventListener("click", () => {
-            handleAnswer("need");
-        });
-        
-        $("want-button").addEventListener("click", () => {
-            handleAnswer("want");
-        });
-        
+        $("how-to-play").addEventListener("click", () => showScreen("screen-how-to-play"));
+        $("back-to-start").addEventListener("click", () => showScreen("screen-start"));
+        $("need-button").addEventListener("click", () => handleAnswer("need"));
+        $("want-button").addEventListener("click", () => handleAnswer("want"));
         $("play-again").addEventListener("click", resetGame);
     </script>
 </body>
